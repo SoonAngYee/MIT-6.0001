@@ -33,5 +33,5 @@ else:
             high = guess
         if low >= high:
             break        
-        print(f"Best savings rate: {float(guess/10000):.4f}")
-        print(f"Steps in bisection search: {number_of_guesses}")
+    print(f"Best savings rate: {float(guess/10000):.4f}")
+    print(f"Steps in bisection search: {number_of_guesses}")
