@@ -33,8 +33,5 @@ else:
             high = guess
         if low >= high:
             break        
-    if low >= 9999:
-        print("It is not possible to pay the down payment in three years.")
-    else:
         print(f"Best savings rate: {float(guess/10000):.4f}")
         print(f"Steps in bisection search: {number_of_guesses}")
