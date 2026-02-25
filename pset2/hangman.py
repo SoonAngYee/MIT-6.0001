@@ -12,8 +12,7 @@
 import random
 import string
 
-WORDLIST_FILENAME = "words.txt"
-
+WORDLIST_FILENAME = "D:\MIT 6.0001\pset2\words.txt"
 
 def load_words():
     """
@@ -60,10 +59,11 @@ def is_word_guessed(secret_word, letters_guessed):
     returns: boolean, True if all the letters of secret_word are in letters_guessed;
       False otherwise
     '''
-    # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
 
-
+    for letter in secret_word:
+        if letter not in letters_guessed:
+            return False
+    return True
 
 def get_guessed_word(secret_word, letters_guessed):
     '''
@@ -72,10 +72,14 @@ def get_guessed_word(secret_word, letters_guessed):
     returns: string, comprised of letters, underscores (_), and spaces that represents
       which letters in secret_word have been guessed so far.
     '''
-    # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
-
-
+    
+    word = []
+    for letter in secret_word:
+      if letter in letters_guessed:
+          word.append(letter)
+      else:
+          word.append("_ ")
+    return "".join(word)
 
 def get_available_letters(letters_guessed):
     '''
@@ -83,10 +87,13 @@ def get_available_letters(letters_guessed):
     returns: string (of letters), comprised of letters that represents which letters have not
       yet been guessed.
     '''
-    # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
-    
-    
+
+    letters_all = string.ascii_lowercase
+    letters_not_guessed = []
+    for letter in letters_all:
+        if letter not in letters_guessed:
+            letters_not_guessed.append(letter)
+    return "".join(letters_not_guessed)
 
 def hangman(secret_word):
     '''
@@ -113,8 +120,64 @@ def hangman(secret_word):
     
     Follows the other limitations detailed in the problem write-up.
     '''
-    # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
+    print("Welcome to the game Hangman!")
+    print(f"I am thinking of a word that is {len(secret_word)} letters long.")
+    guesses = 6
+    warnings = 3
+    letters_guessed = []
+    previous_guess = get_guessed_word(secret_word, letters_guessed)
+    while guesses > 0:
+      while True:
+        print("-------------")
+        print(f"You have {guesses} guesses left.")
+        print(f"Available letters: {get_available_letters(letters_guessed)}")
+        letter = input("Please guess a letter: ").lower()
+        if letter.isalpha():
+            if letter in letters_guessed:
+                if warnings > 0:
+                  warnings -= 1
+                  print(f"Oops! You've already guessed that letter. You have {warnings} warnings left: {get_guessed_word(secret_word, letters_guessed)}")
+                else:
+                    print(f"You've already guessed that letter. You have no warnings left so you lose one guess: {get_guessed_word(secret_word, letters_guessed)}")
+                    guesses -= 1
+                    if guesses == 0:
+                       break
+            else:
+                break
+        else:
+          if warnings >= 0:
+            warnings -= 1
+            print(f"Oops! That is not a valid letter. You have {warnings} warnings left: {get_guessed_word(secret_word, letters_guessed)}")
+          else:
+            print(f"Oops! That is not a valid letter. You have no warnings left so you lose one guess: {get_guessed_word(secret_word, letters_guessed)}")
+            guesses -= 1
+            if guesses == 0:
+               break
+      if guesses == 0:
+         print(f"Sorry, you ran out of guesses. The word was {secret_word}.")
+         break
+      letters_guessed.append(letter)
+      current_guess = get_guessed_word(secret_word, letters_guessed)
+      if current_guess == previous_guess:
+         print(f"Oops! That letter is not in my word: {get_guessed_word(secret_word, letters_guessed)}")
+         if letter in "aeiou":
+            guesses -= 2
+         else:
+            guesses -= 1
+      else:
+         previous_guess = current_guess
+         print(f"Good guess: {get_guessed_word(secret_word, letters_guessed)}")
+         if is_word_guessed(secret_word, letters_guessed):
+            print("Congratulations, you won!")
+            print(f"Your total score for this game is: {(guesses) * len(set(secret_word))}")
+            break
+    else:
+       print(f"Sorry, you ran out of guesses. The word was {secret_word}.")
+
+
+
+
+
 
 
 
@@ -202,7 +265,7 @@ if __name__ == "__main__":
     # uncomment the following two lines.
     
     secret_word = choose_word(wordlist)
-    hangman(secret_word)
+    hangman("tact")
 
 ###############
     
