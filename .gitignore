@@ -1,6 +1,6 @@
 words.txt
 story.txt
 __pycache__/
-triggers.txt
-mtTkinter.py
-project_util.py
+pset5/triggers.txt
+pset5/mtTkinter.py
+pset5/project_util.py
